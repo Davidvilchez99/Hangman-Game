@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<script>
+    window.onload = () =>{
+        function play(){
+            var counter = 10;
+            var counterTrue = 0;
+            var counterWin = 0;
+            repeatBTN = document.getElementById("repeat");
+            word = prompt("Dime la palabra").toLowerCase();
+                hangmanDiv = document.getElementById("hangmanDiv");
+                hangmanDiv2 = document.getElementById("hangmanDiv2");
+                buttons = document.getElementsByTagName("button");
+                livesDiv = document.getElementById("lives");
+                wordH3 = document.getElementById("wordH3");
+                
+                for (i=0; i<word.length; i++){
+                    div = document.createElement("div");
+                    div2 = document.createElement("div");
+                    hangmanDiv.appendChild(div);
+                    hangmanDiv2.appendChild(div2);
+                    div2.style.width = "50px";
+                    div2.style.heigth = "50px";
+                    div.style.width = "50px";
+                    div.style.heigth = "50px";
+                    div.style.color = "white";
+                    div2.style.borderBottom = "3px solid white";
+                    div.style.backgroundColor = "olive";
+                    div.style.margin = "5px";
+                    div2.style.margin = "5px";
+                    div.style.textAlign = "center";
+                    div2.style.textAlign = "center";
+                    div.style.fontSize = "x-large";
+                    div.style.visibility = "hidden";
+                    div.id = "div"+i;
+                    div2.id = "div2"+i;
+                    document.getElementById("div"+i).innerHTML = word.charAt(i);
+                    wordH3.innerHTML = "The word have "+word.length+" letters";
+                    repeatBTN.style.visibility = "hidden";
+                    repeatBTN.style.width = "100px";
+                    repeatBTN.style.heigth = "auto";
+                }
+                function empezar(e){
+                    for(j=0; j<word.length; j++){
+                        if(document.getElementById("div"+j).innerHTML==e.target.value){
+                            document.getElementById("div"+j).style.color = "white";
+                            document.getElementById("div"+j).style.fontFamily = "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif";
+                            document.getElementById("div"+j).style.visibility = "visible";
+                            counterTrue++;
+                            counterWin++;
+                        }
+                    }
+                    if (counterTrue!=0){
+                        counterTrue=0;
+                        return false;
+                    }else
+                        return true;
+                }
+                function intermedia(e){
+                    e.target.style.backgroundColor = "black";
+                    e.target.style.color = "white";
+                    if(empezar(e)===true){
+                        counter--;
+                        livesDiv.innerHTML = "Tienes "+counter+" vidas";
+                    }
+                    if (counter==0){
+                        livesDiv.innerHTML = "Has perdido";
+                        for (i=0; i<27; i++){
+                            buttons[i].disabled = true;
+                        }
+                        repeatBTN.style.visibility = "visible";
+                        repeatBTN.innerHTML = "Volver a jugar";
+                        counterWin = 0;
+                        counter = 10;
+                        counterTrue = 0;
+                    }
+                    if(counterWin == word.length){
+                        livesDiv.innerHTML = "Has ganado!!!";
+                        for (i=0; i<27; i++){
+                            buttons[i].disabled = true;
+                        }
+                        repeatBTN.style.visibility = "visible";
+                        repeatBTN.innerHTML = "Volver a jugar";
+                        counterWin = 0;
+                        counter = 10;
+                        counterTrue = 0;
+                    }
+                }
+                for (i=0; i<27; i++){
+                    buttons[i].addEventListener('click', intermedia);
+                }          
+                repeatBTN.addEventListener('click', ()=>{
+                livesDiv.innerHTML = "";
+                for (i=0; i<word.length; i++){
+                document.getElementById("div"+i).remove();
+                document.getElementById("div2"+i).remove();
+                }
+                for (i=0; i<27; i++){
+                    buttons[i].disabled = false;
+                }
+                play();
+                });
+            }
+            play();                
+}
+</script>
+<body>
+    <h1>HANGMAN</h1>
+    <h2>VANILLA JAVASCRIPT HANGMAN GAME</h2>
+    <h4>Use alphabet below to guess the word, or click hint to get a clue.</h4>
+    <div id="father">
+        <button id="alphabet" value="a">a</button><button id="alphabet" value="b">b</button><button id="alphabet" value="c">c</button><button id="alphabet" value="d">d</button><button id="alphabet" value="e">e</button><button id="alphabet" value="f">f</button><button id="alphabet" value="g">g</button><button id="alphabet" value="h">h</button><button id="alphabet" value="i">i</button><button id="alphabet" value="j">j</button><button id="alphabet" value="k">k</button><button id="alphabet" value="l">l</button><button id="alphabet" value="m">m</button><button id="alphabet" value="n">n</button><button id="alphabet" value="ñ">ñ</button><button id="alphabet"value="o">o</button><button id="alphabet" value="p">p</button><button id="alphabet" value="q">q</button><button id="alphabet" value="r">r</button><button id="alphabet" value="s">s</button><button id="alphabet" value="t">t</button><button id="alphabet" value="u">u</button><button id="alphabet" value="v">v</button><button id="alphabet" value="w">w</button><button id="alphabet" value="x">x</button><button id="alphabet" value="y">y</button><button id="alphabet" value="z">z</button>
+    </div>
+    <h2>The chosen category is city</h2>
+    <h3 id="wordH3"></h3>
+    <br><br>
+    <div id="hangmanDiv"></div>
+    <div id="hangmanDiv2"></div>
+    <br><br>
+    <div id="lives"></div>
+    <br>
+    <button id="repeat"></button>
+    </body>
+</html>
